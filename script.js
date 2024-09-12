@@ -1,19 +1,4 @@
 
-document.onreadystatechange = function () {
-    if(document.readyState !== "complete")
-    {
-        //document.querySelector("body").style.visibility = "hidden" ;
-        document.getElementById("loaderContainer").style.visibility = "visible" ;
-    }
-    else
-    {
-        setTimeout(()=> {
-            document.getElementById('loader').style.display = "none" ;
-            //document.querySelector('body').style.visibility = "visible" ;
-            }, 5000) ;
-    }
-}
-
 function loading() {
     const loader = document.querySelector('#container');
     const content = document.querySelector('#summary');
@@ -36,6 +21,34 @@ var close = document.getElementById('close');
 close.addEventListener('click', function() {
     document.getElementById('summary').style.display = 'none';
     document.getElementById('operation').style.display = 'none';
+});
+
+var download = document.getElementById('download');
+download.addEventListener('click', function() {
+    // Get the <h1> and <p> elements inside the #summary div
+    var summaryDiv = document.getElementById('summary');
+    
+    // Get the text content from <h1> and <p>
+    var heading = summaryDiv.querySelector('h1').textContent;
+    var paragraph = summaryDiv.querySelector('p').textContent;
+
+    if(heading === "" && paragraph === "Error analyzing the file."){
+        alert("Nothing to download") ;
+        return ;
+    }
+    
+    // Combine the text into a single string
+    var fullText = heading + "\n\n" + paragraph;
+    
+    // Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+    var doc = new jsPDF();
+    
+    // Add the text content to the PDF
+    doc.text(fullText, 10, 10); // Starting coordinates (10, 10)
+
+    // Save the PDF with the name 'summary.pdf'
+    doc.save('summary.pdf');
 });
 
 var upload = document.getElementById('upload') ;
@@ -73,6 +86,6 @@ document.getElementById('report').addEventListener('change', function(event) {
     .catch(error => {
         document.getElementById('summary').style.display = 'block' ;
         document.getElementById('operation').style.display = 'block' ;
-        document.getElementById('summary').innerHTML = '<p>Error analyzing the file.</p>';
+        document.getElementById('summary').innerHTML = '<h1></h1><p>Error analyzing the file.</p>';
     });
 });
