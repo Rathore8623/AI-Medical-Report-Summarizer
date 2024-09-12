@@ -1,0 +1,234 @@
+body{
+    margin: 0px ;
+    padding: 0px ;
+    box-sizing: border-box ;
+}
+.main, #container{
+    width: 100% ;
+    height: 100dvh ;
+    display: flex ;
+    position: fixed ;
+}
+.main{
+    justify-content: space-between ;
+}
+#container{
+    background: rgba(0, 0, 0, 0.7) ;
+    z-index: 5 ;
+    justify-content: center ;
+    align-items: center ;
+    color: #FFFFFF ;
+    font-family: "Raleway Thin";
+    display: none ;
+}
+#container h1{
+    margin-right: 20px ;
+}
+.loader{
+	width: 50px ;
+	height: 50px ;
+	border-radius: 50% ;
+	animation: spin 1.5s linear infinite ;
+} 
+@keyframes spin{
+	0%{
+	    transform: rotate(0deg) ;
+    } 	
+    100%{
+        transform: rotate(360deg) ;
+    }
+}
+.loader span{
+	position: absolute ;
+	transform: rotate(calc(60deg * var(--i))) ;
+    inset: 1px ;			
+}
+#bubble{
+	width: 12px ;
+	height: 12px ;
+	border-radius: 50% ;
+    background-color: #90D6FF ;
+}
+.operation{
+    width: 500px ;
+    position: fixed ;
+    bottom: anchor(top) ;
+    left: 85% ;
+    top: 2% ;
+    display: none ;
+    justify-content: space-between ;
+    align-items: center ;
+    z-index: 3 ;
+}
+.close_button, .download_button{
+    font-size: 12pt ;
+    color: #000000 ;
+    background: transparent ;
+    font-family: "Raleway Thin" ;
+    transition: .4s ease ;
+    font-weight: bold ;
+    transition: .8s ease ;
+}
+.close_button{
+    justify-self: flex-end ;
+    margin-left: 30px ;
+}
+.download_button{
+    justify-self: flex-start ;
+}
+.close_button:hover, .download_button:hover{
+    cursor: pointer ;
+    text-decoration: line-through ;
+}
+#summary{
+    width: 90% ;
+    height: 85% ;
+    backdrop-filter: blur(5px) ;
+    background: rgba(0, 0, 0, 0.8) ;
+    color: #FFFFFF ;
+    position: fixed ;
+    z-index: 3 ;
+    padding: 30px 50px 10px 50px ;
+    translate: 2% 7% ;
+    font-size: 18pt ;
+    font-family: "Raleway Thin" ;
+    overflow-Y: scroll ;
+    border-radius: 3px ;
+    display: none ;
+    box-shadow: 0 0 10px 3px #D4D4D4;
+}
+/*#image{
+    position: fixed ;
+    bottom: anchor(top) ;
+    z-index: 5 ;
+    left: 45% ;
+    top: -3% ;
+    width: 15% ;
+    height: 40% ;
+    object-fit: cover;
+    backdrop-filter: blur(0px);
+    background: rgba(255, 255, 255, 1);
+    background-blend-mode: lighten;
+}*/
+.left{
+    width: 30% ;
+    height: 100% ;
+    background: #90D6FF ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    font-family: "Raleway Thin" ;
+    font-size: 32pt ;
+    color: #ffffff ;
+    overflow:  hidden ;
+    z-index: -2 ;
+    position: relative ;
+    text-shadow: 2px 2px 2px #2F52A4 ;
+}
+.left span, img{
+    position: absolute ;
+}
+.left img:first-child{
+    mix-blend-mode: screen ;
+    width: auto ;
+    height: 100% ;
+    z-index: -1 ;
+    animation: show_up 3s ease forwards ;
+    filter: brightness(85%) saturate(200%) contrast(160%) ;
+}
+.left img:last-child{
+    height: 200px ;
+    mix-blend-mode: screen ;
+    z-index: -1 ;
+    opacity: 0 ;
+    animation: show_up 3s ease forwards 1.5s;
+    filter: contrast(200%) brightness(100%) invert(360%) ;
+    translate: 0% -90% ;
+}
+.left span{
+    padding: 0 20px 0 20px ;
+    opacity: 0 ;
+    animation: show_up 3s ease forwards 2s ;
+    translate: 0 30% ;
+}
+.left span i{
+    color: #2F52A4 ;
+    text-shadow: none ;
+}
+.left span em{
+    font-size: 18pt ;
+    margin-left: 60% ;
+}
+@keyframes show_up{
+    from{
+        opacity: 0 ;
+    }
+    to{
+        opacity: 1 ;
+    }
+}
+.right{
+    width: 70% ;
+    height: 100% ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    flex-direction: column ;
+}
+.right h1, h3{
+    color: #2F52A4 ;
+    font-family: "Raleway Thin" ;
+    text-align: center ;
+}
+.right h1{
+    font-size: 40pt ;
+}
+.right h3{
+    font-size: 16pt ;
+}
+form{
+    width: 80% ;
+    height: 40% ;
+    box-shadow: 0 0 10px 3px #F1F2F3 ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    flex-direction: column ;
+}
+form input{
+    display: none ;
+    translate: 0 -100% ;
+}
+form img{
+    width: auto ;
+    height: 13% ;
+    translate: 0% -60% ;
+}
+#upload{
+    width: 250px ;
+    height: 40px ;
+    font-size: 14pt ;
+    color: #FFFFFF ;
+    font-family: "Raleway Thin" ;
+    background: #84E766 ;
+    outline: none ;
+    border: transparent ;
+    border-radius: 3px ;
+    font-weight: bold ;
+    translate: 0 130% ;
+    transition: .2s ease ;
+    display: flex ;
+    justify-content: space-evenly ;
+    align-items: center ;
+}
+#upload:hover{
+    cursor: pointer ;
+    outline: 2px solid #90D6FF ;
+    outline-offset: 2px ;
+}
+form p{
+    translate: 0 170% ;
+    font-size: 14pt ;
+    font-family: "Raleway Thin" ;
+    color: #404040 ;
+}
