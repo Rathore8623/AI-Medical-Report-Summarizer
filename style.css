@@ -133,14 +133,13 @@ body{
     mix-blend-mode: screen ;
     width: auto ;
     height: 100% ;
-    z-index: -1 ;
+    opacity: 0 ;
     animation: show_up 1s ease forwards ;
     filter: brightness(85%) saturate(200%) contrast(160%) ;
 }
 .left img:last-child{
     height: 200px ;
     mix-blend-mode: screen ;
-    z-index: -1 ;
     opacity: 0 ;
     animation: show_up 1s ease forwards 1.5s ;
     filter: contrast(200%) brightness(100%) invert(360%) ;
