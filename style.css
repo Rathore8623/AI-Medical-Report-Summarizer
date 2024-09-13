@@ -124,6 +124,7 @@ body{
     z-index: -2 ;
     position: relative ;
     text-shadow: 2px 2px 2px #2F52A4 ;
+    box-shadow: 0 0 10px 3px #4faee1 inset ;
 }
 .left span, img{
     position: absolute ;
@@ -133,7 +134,7 @@ body{
     width: auto ;
     height: 100% ;
     z-index: -1 ;
-    animation: show_up 3s ease forwards ;
+    animation: show_up 1s ease forwards ;
     filter: brightness(85%) saturate(200%) contrast(160%) ;
 }
 .left img:last-child{
@@ -141,14 +142,14 @@ body{
     mix-blend-mode: screen ;
     z-index: -1 ;
     opacity: 0 ;
-    animation: show_up 3s ease forwards 1.5s;
+    animation: show_up 1s ease forwards 1.5s ;
     filter: contrast(200%) brightness(100%) invert(360%) ;
     translate: 0% -90% ;
 }
 .left span{
     padding: 0 20px 0 20px ;
     opacity: 0 ;
-    animation: show_up 3s ease forwards 2s ;
+    animation: show_up 1s ease forwards 2s ;
     translate: 0 30% ;
 }
 .left span i{
@@ -194,15 +195,16 @@ form{
     justify-content: center ;
     align-items: center ;
     flex-direction: column ;
+    background: #FFFFFF ;
 }
 form input{
     display: none ;
     translate: 0 -100% ;
 }
 form img{
-    width: auto ;
     height: 13% ;
     translate: 0% -60% ;
+    background-blend-mode: screen;
 }
 #upload{
     width: 250px ;

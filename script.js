@@ -1,4 +1,5 @@
 
+//activates while the site is fetching summary
 function loading() {
     const loader = document.querySelector('#container');
     const content = document.querySelector('#summary');
@@ -9,6 +10,17 @@ function loading() {
     });
 };
 
+//function to select the document when upload button is clicked
+var upload = document.getElementById('upload') ;
+upload.addEventListener('click', function(){
+    upload.style.scale = "0.87" ;
+    setTimeout(() => {
+        upload.style.scale = "1" ;
+    }, 100) ;
+    document.getElementById('report').click() ;
+}) ;
+
+//function to fetch summary
 function fetchSummary() {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -17,45 +29,7 @@ function fetchSummary() {
     });
 }
 
-var close = document.getElementById('close');
-close.addEventListener('click', function() {
-    document.getElementById('summary').style.display = 'none';
-    document.getElementById('operation').style.display = 'none';
-});
-
-var download = document.getElementById('download');
-download.addEventListener('click', function() {
-    // Get the <h1> and <p> elements inside the #summary div
-    var summaryDiv = document.getElementById('summary');
-    
-    // Get the text content from <h1> and <p>
-    var heading = summaryDiv.querySelector('h1').textContent;
-    var paragraph = summaryDiv.querySelector('p').textContent;
-
-    if(heading === "" && paragraph === "Error analyzing the file."){
-        alert("Nothing to download") ;
-        return ;
-    }
-    
-    // Combine the text into a single string
-    var fullText = heading + "\n\n" + paragraph;
-    
-    // Initialize jsPDF
-    const { jsPDF } = window.jspdf;
-    var doc = new jsPDF();
-    
-    // Add the text content to the PDF
-    doc.text(fullText, 10, 10); // Starting coordinates (10, 10)
-
-    // Save the PDF with the name 'summary.pdf'
-    doc.save('summary.pdf');
-});
-
-var upload = document.getElementById('upload') ;
-upload.addEventListener('click', function(){
-    document.getElementById('report').click() ;
-}) ;
-
+//function to display summary in the summary container
 document.getElementById('report').addEventListener('change', function(event) {
     const fileInput = document.getElementById('report');
     const file = fileInput.files[0];
@@ -88,4 +62,40 @@ document.getElementById('report').addEventListener('change', function(event) {
         document.getElementById('operation').style.display = 'block' ;
         document.getElementById('summary').innerHTML = '<h1></h1><p>Error analyzing the file.</p>';
     });
+});
+
+//function to close the summary container
+var close = document.getElementById('close');
+close.addEventListener('click', function() {
+    document.getElementById('summary').style.display = 'none';
+    document.getElementById('operation').style.display = 'none';
+});
+
+//function to download the content of the summary container
+var download = document.getElementById('download');
+download.addEventListener('click', function() {
+    // Get the <h1> and <p> elements inside the #summary div
+    var summaryDiv = document.getElementById('summary');
+    
+    // Get the text content from <h1> and <p>
+    var heading = summaryDiv.querySelector('h1').textContent;
+    var paragraph = summaryDiv.querySelector('p').textContent;
+
+    if(heading === "" && paragraph === "Error analyzing the file."){
+        alert("Nothing to download") ;
+        return ;
+    }
+    
+    // Combine the text into a single string
+    var fullText = heading + "\n\n" + paragraph;
+    
+    // Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+    var doc = new jsPDF();
+    
+    // Add the text content to the PDF
+    doc.text(fullText, 10, 10); // Starting coordinates (10, 10)
+
+    // Save the PDF with the name 'summary.pdf'
+    doc.save('summary.pdf');
 });
