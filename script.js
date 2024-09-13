@@ -1,4 +1,17 @@
 
+//Disabling right clicks
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+        (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+        (e.ctrlKey && e.key === 'U')) {
+        e.preventDefault();
+    }
+});
+
 //activates while the site is fetching summary
 function loading() {
     const loader = document.querySelector('#container');
@@ -13,7 +26,7 @@ function loading() {
 //function to select the document when upload button is clicked
 var upload = document.getElementById('upload') ;
 upload.addEventListener('click', function(){
-    upload.style.scale = "0.87" ;
+    upload.style.scale = "0.95" ;
     setTimeout(() => {
         upload.style.scale = "1" ;
     }, 100) ;
