@@ -45,6 +45,8 @@ function fetchSummary() {
 //function to display summary in the summary container
 document.getElementById('report').addEventListener('change', function(event) {
     const fileInput = document.getElementById('report');
+    const summaryDiv = document.getElementById('summary') ;
+    const operation = document.getElementById('operation') ;
     const file = fileInput.files[0];
 
     if (!file) {
@@ -66,22 +68,30 @@ document.getElementById('report').addEventListener('change', function(event) {
         return response.json(); 
     })
     .then(data => {
-        document.getElementById('summary').style.display = 'block' ;
-        document.getElementById('operation').style.display = 'flex' ;
+        //summaryDiv.style.display = 'block' ;
+        //operation.style.display = 'flex' ;
+        summaryDiv.style.animation = "scale_up .4s ease forwards" ;
+        operation.style.animation = "scale_up .4s ease forwards" ;
         document.getElementById('summary').innerHTML = `<h1>Diagnosis</h1><p>${data.summary}</p>`;
     })
     .catch(error => {
-        document.getElementById('summary').style.display = 'block' ;
-        document.getElementById('operation').style.display = 'block' ;
+        //summaryDiv.style.display = 'block' ;
+        //operation.style.display = 'flex' ;
+        summaryDiv.style.animation = "scale_up .4s ease forwards" ;
+        operation.style.animation = "scale_up .4s ease forwards" ;
         document.getElementById('summary').innerHTML = '<h1></h1><p>Error analyzing the file.</p>';
+    })
+    .finally(() => {
+        // Reset the file input so the same file can be selected again
+        fileInput.value = ''; 
     });
 });
 
 //function to close the summary container
 var close = document.getElementById('close');
 close.addEventListener('click', function() {
-    document.getElementById('summary').style.display = 'none';
-    document.getElementById('operation').style.display = 'none';
+    document.getElementById('summary').style.animation = "scale_down .4s ease forwards";
+    document.getElementById('operation').style.animation = "scale_down .4s ease forwards" ;
 });
 
 //function to download the content of the summary container

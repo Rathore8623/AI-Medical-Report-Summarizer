@@ -1,3 +1,6 @@
+*{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif ;
+}
 body{
     margin: 0px ;
     padding: 0px ;
@@ -23,6 +26,7 @@ body{
 }
 #container h1{
     margin-right: 20px ;
+    font-family: "Raleway Thin" ;
 }
 .loader{
 	width: 50px ;
@@ -55,10 +59,11 @@ body{
     bottom: anchor(top) ;
     left: 85% ;
     top: 2% ;
-    display: none ;
     justify-content: space-between ;
     align-items: center ;
     z-index: 3 ;
+    opacity: 0 ;
+    scale: 0 ;
 }
 .close_button, .download_button{
     font-size: 12pt ;
@@ -94,22 +99,34 @@ body{
     font-family: "Raleway Thin" ;
     overflow-Y: scroll ;
     border-radius: 3px ;
-    display: none ;
     box-shadow: 0 0 7px 1px #333333;
+    transition: .4s ease ;
+    scale: 0 ;
+    opacity: 0 ;
 }
-/*#image{
-    position: fixed ;
-    bottom: anchor(top) ;
-    z-index: 5 ;
-    left: 45% ;
-    top: -3% ;
-    width: 15% ;
-    height: 40% ;
-    object-fit: cover;
-    backdrop-filter: blur(0px);
-    background: rgba(255, 255, 255, 1);
-    background-blend-mode: lighten;
-}*/
+#summary p, h1{
+    font-family: "Raleway Thin" ;
+}
+@keyframes scale_up{
+    0%{
+        scale: 0 ;
+        opacity: 0 ;
+    }
+    100%{
+        scale: 1 ;
+        opacity: 1 ;
+    }
+}
+@keyframes scale_down{
+    from{
+        scale: 1 ;
+        opacity: 1 ;
+    }
+    to{
+        scale: 0 ;
+        opacity: 0 ;
+    }
+}
 .left{
     width: 30% ;
     height: 100% ;
@@ -117,8 +134,6 @@ body{
     display: flex ;
     justify-content: center ;
     align-items: center ;
-    font-family: "Raleway Thin" ;
-    font-size: 32pt ;
     color: #ffffff ;
     overflow:  hidden ;
     z-index: -2 ;
@@ -126,8 +141,10 @@ body{
     text-shadow: 2px 2px 2px #2F52A4 ;
     box-shadow: 0 0 10px 3px #4faee1 inset ;
 }
-.left span, img{
+.left span, span > em, img{
     position: absolute ;
+    font-family: "Raleway Thin" ;
+    font-size: 32pt ;
 }
 .left img:first-child{
     mix-blend-mode: screen ;
@@ -142,7 +159,7 @@ body{
     mix-blend-mode: screen ;
     opacity: 0 ;
     animation: show_up 1s ease forwards 1.5s ;
-    filter: contrast(200%) brightness(100%) invert(360%) ;
+    filter: contrast(200%) brightness(100%) invert(100%) saturate(200%) ;
     translate: 0% -90% ;
 }
 .left span{
