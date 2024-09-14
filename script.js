@@ -1,6 +1,6 @@
 
 //Disabling right clicks
-document.addEventListener('contextmenu', function(e) {
+/*document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 });
 document.addEventListener('keydown', function(e) {
@@ -10,7 +10,7 @@ document.addEventListener('keydown', function(e) {
         (e.ctrlKey && e.key === 'U')) {
         e.preventDefault();
     }
-});
+});*/
 
 //activates while the site is fetching summary
 function loading() {
