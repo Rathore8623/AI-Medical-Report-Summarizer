@@ -254,12 +254,14 @@ form p{
 }
 @media screen and (0px <= width < 480px){
     #summary{
-        max-width: 60% ;
+        max-width: 80% ;
+        padding: 10px 10px 8px 10px;
     }
 }
 @media screen and (480px <= width <= 1000px){
     #summary{
-        max-width: 72% ;
+        max-width: 90% ;
+        padding: 10px 12px 8px 12px ;
     }
 }
 @media screen and (0px <= width <= 1000px){
