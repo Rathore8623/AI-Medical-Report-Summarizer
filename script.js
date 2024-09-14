@@ -42,11 +42,26 @@ function fetchSummary() {
     });
 }
 
-//function to display summary in the summary container
+/* Typing effect function */
+function createTypingEffect(summaryText) {
+    // Destroy the previous instance of Typed.js if it exists
+    if (typeof typed !== 'undefined') {
+        typed.destroy(); // This removes the previous typing effect instance
+    }
+
+    // Create a new typing effect with the fetched summary
+    typed = new Typed(document.getElementById('summary').getElementsByTagName('p')[0], {
+        strings: [summaryText], // Use the fetched summary
+        typeSpeed: 12,          // Adjust typing speed if needed
+        loop: false              // Set to false if you don't want it to loop
+    });
+}
+
+// Function to display summary in the summary container
 document.getElementById('report').addEventListener('change', function(event) {
     const fileInput = document.getElementById('report');
-    const summaryDiv = document.getElementById('summary') ;
-    const operation = document.getElementById('operation') ;
+    const summaryDiv = document.getElementById('summary');
+    const operation = document.getElementById('operation');
     const file = fileInput.files[0];
 
     if (!file) {
@@ -56,7 +71,8 @@ document.getElementById('report').addEventListener('change', function(event) {
 
     const formData = new FormData();
     formData.append('file', file);
-    loading() ;
+    loading();
+    
     fetch('http://127.0.0.1:5000/analyze', {  
         method: 'POST',
         body: formData
@@ -68,18 +84,20 @@ document.getElementById('report').addEventListener('change', function(event) {
         return response.json(); 
     })
     .then(data => {
-        //summaryDiv.style.display = 'block' ;
-        //operation.style.display = 'flex' ;
-        summaryDiv.style.animation = "scale_up .4s ease forwards" ;
-        operation.style.animation = "scale_up .4s ease forwards" ;
-        document.getElementById('summary').innerHTML = `<h1>Diagnosis</h1><p>${data.summary}</p>`;
+        summaryDiv.style.animation = "scale_up .4s ease forwards";
+        operation.style.animation = "scale_up .4s ease forwards";
+
+        // Clear the summary container before typing effect
+        document.getElementById('summary').innerHTML = `<h1>Diagnosis</h1><p></p>`;
+
+        // Call the typing effect function with the analyzed summary
+        setTimeout(() => {createTypingEffect(data.summary)}, 1000);
     })
     .catch(error => {
-        //summaryDiv.style.display = 'block' ;
-        //operation.style.display = 'flex' ;
-        summaryDiv.style.animation = "scale_up .4s ease forwards" ;
-        operation.style.animation = "scale_up .4s ease forwards" ;
-        document.getElementById('summary').innerHTML = '<h1></h1><p>Error analyzing the file.</p>';
+        summaryDiv.style.animation = "scale_up .4s ease forwards";
+        operation.style.animation = "scale_up .4s ease forwards";
+        document.getElementById('summary').innerHTML = '<h1></h1><p></p>';
+        setTimeout(() => {createTypingEffect("Error analyzing the file.")}, 1000);
     })
     .finally(() => {
         // Reset the file input so the same file can be selected again
