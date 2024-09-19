@@ -1,142 +1,133 @@
-
-//Disabling right clicks
-/*document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
+//function to trigger file selection
+var upload = document.getElementById('upload');
+upload.addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent form submission
+  upload.style.transform = "scale(0.95)";
+  setTimeout(() => {
+    upload.style.transform = "scale(1)";
+  }, 100);
+  document.getElementById('report').click(); 
 });
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'F12' || 
-        (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-        (e.ctrlKey && e.shiftKey && e.key === 'J') || 
-        (e.ctrlKey && e.key === 'U')) {
-        e.preventDefault();
-    }
-});*/
 
-//activates while the site is fetching summary
-function loading() {
-    const loader = document.querySelector('#container');
-    const content = document.querySelector('#summary');
-    loader.style.display = 'flex' ;
-    fetchSummary().then(() => {
-        loader.style.display = 'none';
-        summary.style.display = 'block';
+//function to select file
+document.getElementById('report').addEventListener('change', function(event) {
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from reloading the page
+    // Trigger file upload logic
     });
-};
+    const file = event.target.files[0];
+    if(!file){
+        alert("Please select a file!") ;
+    }
+    else {
+        loading(file);
+    }
+});
 
-//function to select the document when upload button is clicked
-var upload = document.getElementById('upload') ;
-upload.addEventListener('click', function(){
-    upload.style.scale = "0.95" ;
-    setTimeout(() => {
-        upload.style.scale = "1" ;
-    }, 100) ;
-    document.getElementById('report').click() ;
-}) ;
+const apiUrl = 'http://127.0.0.1:5000/analyze'; 
 
 //function to fetch summary
-function fetchSummary() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, 2000);
-    });
-}
-
-/* Typing effect function */
-function createTypingEffect(summaryText) {
-    // Destroy the previous instance of Typed.js if it exists
-    if (typeof typed !== 'undefined') {
-        typed.destroy(); // This removes the previous typing effect instance
-    }
-
-    // Create a new typing effect with the fetched summary
-    typed = new Typed(document.getElementById('summary').getElementsByTagName('p')[0], {
-        strings: [summaryText], // Use the fetched summary
-        typeSpeed: 12,          // Adjust typing speed if needed
-        loop: false              // Set to false if you don't want it to loop
-    });
-}
-
-// Function to display summary in the summary container
-document.getElementById('report').addEventListener('change', function(event) {
-    const fileInput = document.getElementById('report');
-    const summaryDiv = document.getElementById('summary');
-    const operation = document.getElementById('operation');
-    const file = fileInput.files[0];
-
-    if (!file) {
-        alert('Please select a file!');
-        return;
-    }
-
+async function fetchSummary(file) {
     const formData = new FormData();
     formData.append('file', file);
-    loading();
     
-    fetch('http://127.0.0.1:5000/analyze', {  
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error analyzing the file');
+    try {
+        alert("file sent");
+
+        let response = axios.post(apiUrl, formData) ;
+
+        alert("response received");
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        // Log the raw response text to see if it's correct
+        const responseText = await response.text();
+        console.log('Raw response:', responseText);
+
+        // If the response is JSON, parse it
+        const data = JSON.parse(responseText);  // Use JSON.parse to ensure it's valid JSON
+        console.log('Parsed response data:', data);
+
+        if (!data || !data.summary) {
+            throw new Error('Invalid response structure');
         }
-        return response.json(); 
-    })
-    .then(data => {
-        summaryDiv.style.animation = "scale_up .4s ease forwards";
-        operation.style.animation = "scale_up .4s ease forwards";
 
-        // Clear the summary container before typing effect
-        document.getElementById('summary').innerHTML = `<h1>Diagnosis</h1><p></p>`;
+        return data.summary;
+    } 
+    catch (error) {
+        console.error('Fetch error:', error);
+        return "Error analyzing the file.";
+    }
+}
+// Function to show loader and display summary
+async function loading(file) {
+    const loader = document.getElementById('container');
+    const content = document.getElementById('summary');
+    const operation = document.getElementById('operation');
 
-        // Call the typing effect function with the analyzed summary
-        setTimeout(() => {createTypingEffect(data.summary)}, 1000);
-    })
-    .catch(error => {
-        summaryDiv.style.animation = "scale_up .4s ease forwards";
-        operation.style.animation = "scale_up .4s ease forwards";
-        document.getElementById('summary').innerHTML = '<h1></h1><p></p>';
-        setTimeout(() => {createTypingEffect("Error analyzing the file.")}, 1000);
-    })
-    .finally(() => {
-        // Reset the file input so the same file can be selected again
-        fileInput.value = ''; 
+    loader.style.display = 'flex';
+
+    try {
+        let summary = await fetchSummary(file); // Await the fetchSummary promise
+        if (summary === "Error analyzing the file.") {
+            loader.style.display = "none";
+            content.style.animation = "scale_up 0.4s ease forwards";
+            operation.style.animation = "scale_up 0.4s ease forwards";
+            content.innerHTML = `<h1>Error</h1><br><p></p>`;
+        } 
+        else {
+            loader.style.display = "none"; // Hide the loader once the summary is ready
+            content.style.animation = "scale_up 0.4s ease forwards";
+            operation.style.animation = "scale_up 0.4s ease forwards";
+            content.innerHTML = `<h1>Diagnosis</h1><br><p></p>`;
+        }
+        createTypingEffect(summary);
+
+    } catch (error) {
+        loader.style.display = "none";
+        content.innerHTML = `<h1>Error</h1><br><p></p>`;
+        createTypingEffect("An unexpected error occurred.") ;
+        console.error(error);
+    }
+}
+
+//function to create typing effect while displaying summary
+let typed; // Global variable for Typed.js instance
+function createTypingEffect(summaryText) {
+    if (typeof typed !== 'undefined' && typed) {
+        typed.destroy(); // Destroy previous instance to avoid overlap
+    }
+
+    typed = new Typed(document.getElementById('summary').getElementsByTagName('p')[0], {
+        strings: [summaryText],
+        typeSpeed: 12,
+        loop: false
     });
-});
+}
 
-//function to close the summary container
-var close = document.getElementById('close');
-close.addEventListener('click', function() {
-    document.getElementById('summary').style.animation = "scale_down .4s ease forwards";
-    document.getElementById('operation').style.animation = "scale_down .4s ease forwards" ;
-});
-
-//function to download the content of the summary container
+//function to download the summary
 var download = document.getElementById('download');
 download.addEventListener('click', function() {
-    // Get the <h1> and <p> elements inside the #summary div
     var summaryDiv = document.getElementById('summary');
-    
-    // Get the text content from <h1> and <p>
     var heading = summaryDiv.querySelector('h1').textContent;
     var paragraph = summaryDiv.querySelector('p').textContent;
 
-    if(heading === "" && paragraph === "Error analyzing the file."){
-        alert("Nothing to download") ;
-        return ;
+    if (heading === "" && paragraph === "Error analyzing the file.") {
+        alert("Nothing to download");
+        return;
     }
-    
-    // Combine the text into a single string
+
     var fullText = heading + "\n\n" + paragraph;
-    
-    // Initialize jsPDF
     const { jsPDF } = window.jspdf;
     var doc = new jsPDF();
-    
-    // Add the text content to the PDF
-    doc.text(fullText, 10, 10); // Starting coordinates (10, 10)
-
-    // Save the PDF with the name 'summary.pdf'
+    doc.text(fullText, 10, 10);
     doc.save('summary.pdf');
+});
+
+//function to close the summary screen
+var close = document.getElementById('close');
+close.addEventListener('click', function() {
+    document.getElementById('summary').style.animation = "scale_down .4s ease forwards";
+    document.getElementById('operation').style.animation = "scale_down .4s ease forwards";
 });
