@@ -95,8 +95,6 @@ body{
     z-index: 3 ;
     padding: 30px 50px 10px 50px ;
     translate: 2% 7% ;
-    font-size: 18pt ;
-    font-family: "Raleway Thin" ;
     overflow-Y: scroll ;
     border-radius: 3px ;
     box-shadow: 0 0 7px 1px #333333;
@@ -107,6 +105,13 @@ body{
 #summary p, h1{
     font-family: "Raleway Thin" ;
     display: inline-block ;
+    font-family: "Raleway Thin" ;
+}
+#summary h1{
+    font-size: 28pt ;
+}
+#summary p{
+    font-size: 18pt ;
 }
 @keyframes scale_up{
     0%{
@@ -152,7 +157,7 @@ body{
     width: auto ;
     height: 100% ;
     opacity: 0 ;
-    animation: show_up 1s ease forwards ;
+    animation: show_up 2s ease forwards ;
     filter: brightness(85%) saturate(200%) contrast(160%) ;
 }
 .left img:last-child{
