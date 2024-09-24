@@ -62,7 +62,6 @@ document.getElementById('report').addEventListener('change', async function(even
             console.error('Fetch error:', error);
         }
         loader.style.display = 'none' ;
-        console.log(data) ;
         window.style.animation = "scale_up 0.4s ease forwards";
         content.style.animation = "scale_up 0.4s ease forwards";
         operation.style.animation = "scale_up 0.4s ease forwards";
