@@ -6,12 +6,15 @@ import google.generativeai as genai
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import sys
+from flask_cors import CORS 
 sys.stdout.reconfigure(encoding='utf-8')
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+
 
 # Set your Google Gemini API key
 api_key = os.getenv('gemini_api_key')
@@ -45,7 +48,7 @@ def summarize_text(text):
     try:
         # Instantiate the GenerativeModel
         model = genai.GenerativeModel('gemini-1.5-flash')
-        input_prompt = f"Summarize the following medical report:\n\n{text}.\n\nThe summary should highlight key medical conditions, medical history, follow-ups, and future health threats. If it is not a medical report do not generate the summary rather tell the user that he uploaded wrong file."
+        input_prompt = f"Summarize the following medical report:\n\n{text}.\n\nThe summary should highlight key medical conditions, medical history, follow-ups, and future health threats make each heading and bullet points in new line only the paragraph should be continuous. If it is not a medical report do not generate the summary rather tell the user that he uploaded wrong file."
         # Generate content using the model
         response = model.generate_content(
             [input_prompt]
@@ -92,10 +95,12 @@ def analyze_file():
         os.remove(file_path)
 
     # Return the summary as a JSON response
-    print(summary)
-    return  jsonify({"summary": summary})
+    try:
+        return jsonify({'summary': summary})
+    except Exception as e:
+        return jsonify({'summary': 'Error analyzing the file.'}), 500
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

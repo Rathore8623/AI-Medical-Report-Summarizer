@@ -109,6 +109,7 @@ body{
 }
 #summary h1{
     font-size: 28pt ;
+    word-spacing: 3rem ;
 }
 #summary p{
     font-size: 18pt ;

@@ -48,16 +48,17 @@
                 READ FASTER AND UNDERSTAND BETTER
             </h3>
 
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="report" id="report" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg">
+            <form id="uploadForm" enctype="multipart/form-data" onsubmit="return false">
+                <input type="file" name="report" id="report" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHpbfDBxp66OxQCxNOVxc4E7vwll81FsSz9Q&s">
                 <button type="button" id="upload"><i class="fa fa-upload"></i>Upload Document</button>
-                <p>Drag and drop file (pdfs/images/.txt) here</p>
+                <p>Drag and drop file here</p>
             </form>
         </div>
     </div>
 </body>
 <script type="text/javascript" src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script defer type="text/javascript" src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 </html>

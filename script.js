@@ -1,96 +1,83 @@
-//function to trigger file selection
-var upload = document.getElementById('upload');
-upload.addEventListener('click', function(event) {
-  event.preventDefault(); // Prevent form submission
-  upload.style.transform = "scale(0.95)";
-  setTimeout(() => {
-    upload.style.transform = "scale(1)";
-  }, 100);
-  document.getElementById('report').click(); 
-});
-
-//function to select file
-document.getElementById('report').addEventListener('change', function(event) {
-    const form = document.getElementById('uploadForm');
-    form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from reloading the page
-    // Trigger file upload logic
-    });
-    const file = event.target.files[0];
-    if(!file){
-        alert("Please select a file!") ;
-    }
-    else {
-        loading(file);
-    }
-});
-
 const apiUrl = 'http://127.0.0.1:5000/analyze'; 
 
-//function to fetch summary
-async function fetchSummary(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    try {
-        alert("file sent");
+window.addEventListener('beforeunload', (event) => {
+    // Save any data you want to persist before the page reloads
+    localStorage.setItem('isRequestPending', 'true');
+    // Optionally show a warning dialog to prevent accidental page reloads
+    event.returnValue = "Are you sure you want to reload the page?";
+});
 
-        let response = axios.post(apiUrl, formData) ;
+// Check if the request was pending after a page refresh
+if (localStorage.getItem('isRequestPending') === 'true') {
+    // You can now try to reinitialize the request, or handle data loss gracefully.
+    localStorage.removeItem('isRequestPending');  // Clear after handling
+}
 
-        alert("response received");
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
+// Function to trigger file selection
+var upload = document.getElementById('upload');
+upload.addEventListener('click', function() {
+    upload.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        upload.style.transform = "scale(1)";
+    }, 100);
+    document.getElementById('report').click(); 
+});
 
-        // Log the raw response text to see if it's correct
-        const responseText = await response.text();
-        console.log('Raw response:', responseText);
+document.getElementById('uploadForm').addEventListener('submit', function(event){
+    event.preventDefault() ;
+});
+// Function to select file
+document.getElementById('report').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        alert("Please select a file!");
+    } 
+    else {
+        let data = "" ;
+        const loader = document.getElementById('container');
+        const content = document.getElementById('summary');
+        const operation = document.getElementById('operation');
 
-        // If the response is JSON, parse it
-        const data = JSON.parse(responseText);  // Use JSON.parse to ensure it's valid JSON
-        console.log('Parsed response data:', data);
+        loader.style.display = 'flex';
 
-        if (!data || !data.summary) {
-            throw new Error('Invalid response structure');
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const response = await axios.post(apiUrl, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                timeout: 10000 // Timeout after 10 seconds
+            });
+            localStorage.setItem('responseData', JSON.stringify(response.data));
+            if (response.status === 200) { // Checking status code instead of .ok
+                data = await response.data.summary; // Get the summary field from JSON response
+            }
+            else {
+                data = "Error analyzing the file." ;
+            }
+        }
+        catch (error) {
+            console.error('Fetch error:', error);
         }
 
-        return data.summary;
-    } 
-    catch (error) {
-        console.error('Fetch error:', error);
-        return "Error analyzing the file.";
-    }
-}
-// Function to show loader and display summary
-async function loading(file) {
-    const loader = document.getElementById('container');
-    const content = document.getElementById('summary');
-    const operation = document.getElementById('operation');
-
-    loader.style.display = 'flex';
-
-    try {
-        let summary = await fetchSummary(file); // Await the fetchSummary promise
-        if (summary === "Error analyzing the file.") {
-            loader.style.display = "none";
+        if (data === "Error analyzing the file.") {
+            loader.style.display = 'none' ;
             content.style.animation = "scale_up 0.4s ease forwards";
             operation.style.animation = "scale_up 0.4s ease forwards";
-            content.innerHTML = `<h1>Error</h1><br><p></p>`;
+            content.innerHTML = `<h1>Error!</h1><br><p></p>`;
+            content.getElementsByTagName('h1').style.color = 'red' ;
         } 
         else {
-            loader.style.display = "none"; // Hide the loader once the summary is ready
+            loader.style.display = 'none' ;
             content.style.animation = "scale_up 0.4s ease forwards";
             operation.style.animation = "scale_up 0.4s ease forwards";
             content.innerHTML = `<h1>Diagnosis</h1><br><p></p>`;
         }
-        createTypingEffect(summary);
 
-    } catch (error) {
-        loader.style.display = "none";
-        content.innerHTML = `<h1>Error</h1><br><p></p>`;
-        createTypingEffect("An unexpected error occurred.") ;
-        console.error(error);
+        createTypingEffect(data);
     }
-}
+});
 
 //function to create typing effect while displaying summary
 let typed; // Global variable for Typed.js instance
