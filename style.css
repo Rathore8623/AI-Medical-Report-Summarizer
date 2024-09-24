@@ -85,34 +85,41 @@ body{
     cursor: pointer ;
     text-decoration: line-through ;
 }
-#summary{
-    width: 90% ;
-    height: 85% ;
-    backdrop-filter: blur(5px) ;
-    background: rgba(0, 0, 0, 0.8) ;
-    color: #FFFFFF ;
+.window, #summary{
     position: fixed ;
     z-index: 3 ;
-    padding: 30px 50px 10px 50px ;
-    translate: 2% 7% ;
-    overflow-Y: scroll ;
     border-radius: 3px ;
-    box-shadow: 0 0 7px 1px #333333;
     transition: .4s ease ;
     scale: 0 ;
     opacity: 0 ;
 }
+.window{
+    width: 96% ;
+    height: 90% ;
+    translate: 2% 7% ;
+    overflow-Y: auto ;
+    backdrop-filter: blur(5px) ;
+    background: rgba(0, 0, 0, 0.95) ;
+    box-shadow: 0 0 7px 1px #333333;
+}
+#summary{
+    min-width: 93% ;
+    height: 100% ;
+    color: #FFFFFF ;
+    padding: 30px 50px 10px 50px ;
+    display: flex ;
+    flex-grow: 1 ;
+    flex-direction: column ;
+}
 #summary p, h1{
     font-family: "Raleway Thin" ;
     display: inline-block ;
-    font-family: "Raleway Thin" ;
 }
 #summary h1{
     font-size: 28pt ;
-    word-spacing: 3rem ;
 }
 #summary p{
-    font-size: 18pt ;
+    font-size: 16pt ;
 }
 @keyframes scale_up{
     0%{
@@ -246,11 +253,13 @@ form img{
     display: flex ;
     justify-content: space-evenly ;
     align-items: center ;
+    box-shadow: 0 0 10px 3px #6ae2e2 inset ;
 }
 #upload:hover{
     cursor: pointer ;
     outline: 2px solid #90D6FF ;
     outline-offset: 2px ;
+    filter: none ;
 }
 form p{
     translate: 0 170% ;
@@ -260,13 +269,13 @@ form p{
 }
 @media screen and (0px <= width < 480px){
     #summary{
-        max-width: 80% ;
+        max-width: 95% ;
         padding: 10px 10px 8px 10px;
     }
 }
 @media screen and (480px <= width <= 1000px){
     #summary{
-        max-width: 90% ;
+        max-width: 100% ;
         padding: 10px 12px 8px 12px ;
     }
 }
@@ -278,7 +287,7 @@ form p{
         font-size: 24pt ;
     }
     #summary p{
-        font-size: 14pt ;
+        font-size: 12pt ;
     }
     .operation{
         width: 180px ;

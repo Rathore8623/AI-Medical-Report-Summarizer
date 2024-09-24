@@ -48,7 +48,7 @@ def summarize_text(text):
     try:
         # Instantiate the GenerativeModel
         model = genai.GenerativeModel('gemini-1.5-flash')
-        input_prompt = f"Summarize the following medical report:\n\n{text}.\n\nThe summary should highlight key medical conditions, medical history, follow-ups, and future health threats make each heading and bullet points in new line only the paragraph should be continuous. If it is not a medical report do not generate the summary rather tell the user that he uploaded wrong file."
+        input_prompt = f"Summarize the following medical report:\n\n{text}.\n\nThe summary should highlight patients details, key medical conditions, operations till now inthis condition if any, medications prescribed, follow-ups, and future health threats in bullet points. Keep the summary very brief but highlight every key point. If it is not a medical report do not generate the summary rather tell the user that he uploaded wrong file."
         # Generate content using the model
         response = model.generate_content(
             [input_prompt]

@@ -28,7 +28,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
 });
 // Function to select file
 document.getElementById('report').addEventListener('change', async function(event) {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
     if (!file) {
         alert("Please select a file!");
     } 
@@ -37,6 +37,7 @@ document.getElementById('report').addEventListener('change', async function(even
         const loader = document.getElementById('container');
         const content = document.getElementById('summary');
         const operation = document.getElementById('operation');
+        const window = document.querySelector('.window');
 
         loader.style.display = 'flex';
 
@@ -46,8 +47,8 @@ document.getElementById('report').addEventListener('change', async function(even
             const response = await axios.post(apiUrl, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                },
-                timeout: 10000 // Timeout after 10 seconds
+                }
+                //timeout: 10000 // Timeout after 10 seconds
             });
             localStorage.setItem('responseData', JSON.stringify(response.data));
             if (response.status === 200) { // Checking status code instead of .ok
@@ -60,24 +61,36 @@ document.getElementById('report').addEventListener('change', async function(even
         catch (error) {
             console.error('Fetch error:', error);
         }
-
+        loader.style.display = 'none' ;
+        console.log(data) ;
+        window.style.animation = "scale_up 0.4s ease forwards";
+        content.style.animation = "scale_up 0.4s ease forwards";
+        operation.style.animation = "scale_up 0.4s ease forwards";
         if (data === "Error analyzing the file.") {
-            loader.style.display = 'none' ;
-            content.style.animation = "scale_up 0.4s ease forwards";
-            operation.style.animation = "scale_up 0.4s ease forwards";
             content.innerHTML = `<h1>Error!</h1><br><p></p>`;
             content.getElementsByTagName('h1').style.color = 'red' ;
+            createTypingEffect(data);
         } 
         else {
-            loader.style.display = 'none' ;
-            content.style.animation = "scale_up 0.4s ease forwards";
-            operation.style.animation = "scale_up 0.4s ease forwards";
+            let summary = splitString(data) ;
             content.innerHTML = `<h1>Diagnosis</h1><br><p></p>`;
+            createTypingEffect(summary);
         }
-
-        createTypingEffect(data);
     }
 });
+
+function splitString(input) {
+    // Use a regular expression to split by #, ##, *, **
+    const splitArray = input.split(/[#*]+/);
+  
+    // Filter out empty strings and add \n at the end of each sentence
+    const resultString = splitArray
+                        .filter(item => item.trim() !== '')
+                        .map(sentence => sentence.trim() + '\n')
+                        .join('');
+  
+    return resultString;
+}
 
 //function to create typing effect while displaying summary
 let typed; // Global variable for Typed.js instance
@@ -86,8 +99,31 @@ function createTypingEffect(summaryText) {
         typed.destroy(); // Destroy previous instance to avoid overlap
     }
 
-    typed = new Typed(document.getElementById('summary').getElementsByTagName('p')[0], {
-        strings: [summaryText],
+    if (typeof summaryText !== 'string' || summaryText.trim() === '') {
+        console.error('Invalid summary text provided.');
+        summaryText = '';  // Default to empty string if invalid
+    }
+
+    // Replace \n with <br> for line breaks in the text
+    const formattedText = summaryText.replace(/\n/g, '<br>');
+
+    // Check if the <p> element inside #summary exists
+    const summaryElement = document.getElementById('summary');
+    const pElement = summaryElement ? summaryElement.getElementsByTagName('p')[0] : null;
+
+    if (!pElement) {
+        console.error('The <p> element inside #summary was not found.');
+        return;
+    }
+
+    // Destroy the previous instance if it exists to avoid overlap
+    if (typed) {
+        typed.destroy();
+    }
+
+    // Initialize a new Typed.js instance with formatted text
+    typed = new Typed(pElement, {
+        strings: [formattedText],
         typeSpeed: 12,
         loop: false
     });
@@ -117,4 +153,5 @@ var close = document.getElementById('close');
 close.addEventListener('click', function() {
     document.getElementById('summary').style.animation = "scale_down .4s ease forwards";
     document.getElementById('operation').style.animation = "scale_down .4s ease forwards";
+    document.querySelector('.window').style.animation = "scale_down .4s ease forwards";
 });
