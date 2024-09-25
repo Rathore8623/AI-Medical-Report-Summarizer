@@ -26,7 +26,9 @@ upload.addEventListener('click', function() {
 document.getElementById('uploadForm').addEventListener('submit', function(event){
     event.preventDefault() ;
 });
-// Function to select file
+
+// Function to select file and get the summary ;
+let summarySaver ;
 document.getElementById('report').addEventListener('change', async function(event) {
     let file = event.target.files[0];
     if (!file) {
@@ -40,6 +42,8 @@ document.getElementById('report').addEventListener('change', async function(even
         const window = document.querySelector('.window');
 
         loader.style.display = 'flex';
+
+        const heading = window.children[0] ;
 
         const formData = new FormData();
         formData.append('file', file);
@@ -65,14 +69,16 @@ document.getElementById('report').addEventListener('change', async function(even
         window.style.animation = "scale_up 0.4s ease forwards";
         content.style.animation = "scale_up 0.4s ease forwards";
         operation.style.animation = "scale_up 0.4s ease forwards";
+
         if (data === "Error analyzing the file.") {
-            content.innerHTML = `<h1>Error!</h1><br><p></p>`;
-            content.getElementsByTagName('h1').style.color = 'red' ;
+            heading.innerHTML = `Error!`;
+            heading.style.color = 'red' ;
             createTypingEffect(data);
         } 
         else {
             let summary = splitString(data) ;
-            content.innerHTML = `<h1>Diagnosis</h1><br><p></p>`;
+            summarySaver = summary ;
+            heading.innerText = "Diagnosis" ;
             createTypingEffect(summary);
         }
     }
@@ -92,7 +98,7 @@ function splitString(input) {
 }
 
 //function to create typing effect while displaying summary
-let typed; // Global variable for Typed.js instance
+let typed;
 function createTypingEffect(summaryText) {
     if (typeof typed !== 'undefined' && typed) {
         typed.destroy(); // Destroy previous instance to avoid overlap
@@ -107,13 +113,7 @@ function createTypingEffect(summaryText) {
     const formattedText = summaryText.replace(/\n/g, '<br>');
 
     // Check if the <p> element inside #summary exists
-    const summaryElement = document.getElementById('summary');
-    const pElement = summaryElement ? summaryElement.getElementsByTagName('p')[0] : null;
-
-    if (!pElement) {
-        console.error('The <p> element inside #summary was not found.');
-        return;
-    }
+    const pElement = document.getElementById('summary') ;
 
     // Destroy the previous instance if it exists to avoid overlap
     if (typed) {
@@ -131,19 +131,31 @@ function createTypingEffect(summaryText) {
 //function to download the summary
 var download = document.getElementById('download');
 download.addEventListener('click', function() {
-    var summaryDiv = document.getElementById('summary');
+    var summaryDiv = document.querySelector('.window');
     var heading = summaryDiv.querySelector('h1').textContent;
-    var paragraph = summaryDiv.querySelector('p').textContent;
+    var paragraph = document.querySelector('#summary').textContent;
 
     if (heading === "" && paragraph === "Error analyzing the file.") {
         alert("Nothing to download");
         return;
     }
-
-    var fullText = heading + "\n\n" + paragraph;
     const { jsPDF } = window.jspdf;
-    var doc = new jsPDF();
-    doc.text(fullText, 10, 10);
+    const doc = new jsPDF();
+
+    const pageHeight = doc.internal.pageSize.height;
+    const margin = 10;
+    const lineHeight = 10;  // Adjust as needed for the text size
+    let y = margin;
+
+    const splitText = doc.splitTextToSize(summarySaver, 180);  // Split the text to fit within the page width
+    for (let i = 0; i < splitText.length; i++) {
+      if (y + lineHeight > pageHeight - margin) {  // Check if text exceeds the page height
+        doc.addPage();  // Add a new page
+        y = margin;  // Reset the y-coordinate to the top for the new page
+      }
+      doc.text(splitText[i], margin, y);
+      y += lineHeight;  // Move down for the next line
+    }
     doc.save('summary.pdf');
 });
 

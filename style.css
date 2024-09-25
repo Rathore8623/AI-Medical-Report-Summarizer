@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
 *{
-    font-family: 'Raleway Thin', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif ;
+    font-family: 'Raleway Thin', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode' ;
 }
 body{
     margin: 0px ;
@@ -103,23 +103,20 @@ body{
     background: rgba(0, 0, 0, 0.95) ;
     box-shadow: 0 0 7px 1px #333333;
 }
+.window h1{
+    font-size: 28pt ;
+    font-family: 'Raleway Thin' ;
+    color: #FFFFFF ;
+    padding-left: 50px ;
+}
 #summary{
     min-width: 93% ;
     height: 100% ;
     color: #FFFFFF ;
-    padding: 30px 50px 10px 50px ;
-    display: flex ;
-    flex-grow: 1 ;
-    flex-direction: column ;
-}
-#summary p, h1{
+    padding: 0 50px 30px 50px ;
+    display: block ;
+    white-space: pre-wrap ;
     font-family: "Raleway Thin" ;
-    display: inline-block ;
-}
-#summary h1{
-    font-size: 28pt ;
-}
-#summary p{
     font-size: 16pt ;
 }
 @keyframes scale_up{
@@ -271,13 +268,35 @@ form p{
 @media screen and (0px <= width < 480px){
     #summary{
         max-width: 95% ;
-        padding: 10px 10px 8px 10px;
+        padding: 10px 10px 12px 10px;
+        margin-bottom: 20px ;
+    }
+    .window h1{
+        padding-left: 10px ;
+        font-size: 24pt ;
+    }
+    #container h1{
+        font-size: 14pt ;
+        margin-right: 10px ;
+    }
+    .loader{
+        width: 20px ;
+        height: 20px ;
+    } 
+    #bubble{
+        width: 5px ;
+        height: 5px ;
     }
 }
 @media screen and (480px <= width <= 1000px){
     #summary{
         max-width: 100% ;
-        padding: 10px 12px 8px 12px ;
+        padding: 0 12px 12px 12px ;
+        margin-bottom: 20px ;
+    }
+    .window h1{
+        padding-left: 12px ;
+        font-size: 24pt ;
     }
 }
 @media screen and (0px <= width <= 1000px){
@@ -289,9 +308,6 @@ form p{
     }
 }
 @media screen and (1000px < width <= 1400px){
-    #summary{
-        max-width: 85% ;
-    }
     .operation{
         translate: -12% 0% ;
     }
@@ -330,10 +346,7 @@ form p{
     .main{
         flex-direction: column ;
     }
-    #summary h1{
-        font-size: 24pt ;
-    }
-    #summary p{
+    #summary{
         font-size: 12pt ;
     }
     .operation{
@@ -388,6 +401,9 @@ form p{
 @media screen and (500px < width <= 1400px){
     #summary{
         max-width: 85% ;
+    }
+    .operation{
+        translate: -22% 0;
     }
     .left, .right{
         width: 100% ;
