@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
 *{
     font-family: 'Raleway Thin', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif ;
 }
@@ -282,58 +283,9 @@ form p{
 @media screen and (0px <= width <= 1000px){
     .main{
         flex-direction: column ;
-    }
-    #summary h1{
-        font-size: 24pt ;
-    }
-    #summary p{
-        font-size: 12pt ;
-    }
-    .operation{
-        width: 180px ;
-        left: 2% ;
-        top: 2% ;
-    }
-    .close_button, .download_button{
-        font-size: 10pt ;
-    }
-    .close_button{
-        margin-left: 14px ;
-    }
-    .left, .right{
-        width: 100% ;
-        height: 100svh ; 
-    }
-    .left img:first-child{
-        width: 100% ;
-        height: 100% ;
-    }
-    .left img:last-child{
-        height: 30% ;
-    }
-    .left span, span i{
-        font-size: 16pt ;
-    }
-    .left span em{
-        font-size: 10pt ;
-    }
-    .right h1{
-        font-size: 22pt ;
-    }
-    .right h3{
-        font-size: 8pt ;
-    }
-    .right form img{
-        height: 5% ;
-    }
-    #upload{
-        width: 120px ;
-        height: 20px ;
-        translate: 0% 150% ;
-        font-size: 8pt ;
-    }
-    form p{
-        font-size: 8pt ;
+        overflow-y: auto ;
+        height: 200svh ;
+        position: relative ;
     }
 }
 @media screen and (1000px < width <= 1400px){
@@ -372,5 +324,105 @@ form p{
     }
     form p{
         font-size: 14pt ;
+    }
+}
+@media screen and (0px <= width <= 500px){
+    .main{
+        flex-direction: column ;
+    }
+    #summary h1{
+        font-size: 24pt ;
+    }
+    #summary p{
+        font-size: 12pt ;
+    }
+    .operation{
+        width: 180px ;
+        left: 2% ;
+        top: 2% ;
+    }
+    .close_button, .download_button{
+        font-size: 10pt ;
+    }
+    .close_button{
+        margin-left: 14px ;
+    }
+    .left, .right{
+        width: 100% ;
+        height: 100svh ; 
+    }
+    .left img:first-child{
+        width: 100% ;
+        height: 100% ;
+    }
+    .left img:last-child{
+        height: 20% ;
+    }
+    .left span, span i{
+        font-size: 16pt ;
+    }
+    .left span em{
+        font-size: 10pt ;
+    }
+    .right h1{
+        font-size: 24pt ;
+    }
+    .right h3{
+        font-size: 11pt ;
+    }
+    .right form img{
+        height: 5% ;
+    }
+    #upload{
+        width: 200px ;
+        height: 30px ;
+        translate: 0% 150% ;
+        font-size: 12pt ;
+        translate: 0 150% ;
+    }
+    form p{
+        font-size: 11pt ;
+        translate: 0 250% ;
+    }
+}
+@media screen and (500px < width <= 1400px){
+    #summary{
+        max-width: 85% ;
+    }
+    .left, .right{
+        width: 100% ;
+        height: 100svh ;
+    }
+    .left img:first-child{
+        width: 100% ;
+        height: 100% ;
+    }
+    .left img:last-child{
+        height: 20% ;
+    }
+    .left span, span i{
+        font-size: 22pt ;
+    }
+    .left span em{
+        font-size: 12pt ;
+    }
+    .right h1{
+        font-size: 28pt ;
+    }
+    .right h3{
+        font-size: 16pt ;
+    }
+    .right form img{
+        height: 8% ;
+    }
+    #upload{
+        width: 200px ;
+        height: 40px ;
+        font-size: 12pt ;
+        translate: 0 120% ;
+    }
+    form p{
+        font-size: 12pt ;
+        translate: 0 250% ;
     }
 }
