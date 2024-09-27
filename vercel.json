@@ -4,20 +4,12 @@
       {
         "src": "back-end.py",
         "use": "@vercel/python",
-        "config": {
-          "maxLambdaSize": "450mb",
-          "memory": 1024
-        }
       }
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
-        "dest": "back-end.py"
-      },
-      {
         "src": "/(.*)",
-        "dest": "/index.html"
+        "dest": "back-end.py"
       }
     ]
   }
