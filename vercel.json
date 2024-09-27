@@ -5,8 +5,8 @@
             "src": "back-end.py",
             "use": "@vercel/python",
             "config": {
-                "maxLambdaSize": "450mb", 
-                "memory": 1024 
+                "maxLambdaSize": "250mb",
+                "memory": 1024
             }
         }
     ],
@@ -17,7 +17,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "/index.html" 
+            "dest": "/index.html"
         }
     ]
 }
