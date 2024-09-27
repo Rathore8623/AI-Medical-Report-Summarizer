@@ -52,10 +52,9 @@ document.getElementById('report').addEventListener('change', async function(even
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
-                //timeout: 10000 // Timeout after 10 seconds
             });
             localStorage.setItem('responseData', JSON.stringify(response.data));
-            if (response.status === 200) { // Checking status code instead of .ok
+            if (response.status === 200) { 
                 data = await response.data.summary; // Get the summary field from JSON response
             }
             else {
