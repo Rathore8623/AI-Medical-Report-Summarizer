@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Summarizer</title>
+</head>
+<body>
+    <div id="container">
+        <h1>Summarizing</h1>
+		<div class="loader">
+			<span style="--i:1;"><div id="bubble"></div></span>
+		    <span style="--i:2;"><div id="bubble"></div></span>
+		    <span style="--i:3;"><div id="bubble"></div></span>
+		    <span style="--i:4;"><div id="bubble"></div></span>
+		    <span style="--i:5;"><div id="bubble"></div></span>
+		    <span style="--i:6;"><div id="bubble"></div></span>
+		</div>
+    </div>
+    <div class="main">
+        <div class="operation" anchor="summary" id="operation">
+            <span class="download_button" id="download">
+                DOWNLOAD
+            </span>
+            <span class="close_button" id="close">
+                CLOSE
+            </span>
+        </div>
+        <div class="window">
+            <h1></h1>
+            <span id="summary"></span>
+        </div>
+        <div class="left">
+            <img src="https://png.pngtree.com/png-clipart/20210624/ourmid/pngtree-smoke-cloud-dark-cloud-border-png-image_3512453.jpg">
+            <span>
+                <i class="fa fa-quote-left"></i>
+                    Wherever the art of Medicine is loved, there is also a love of Humanity.
+                <i class="fa fa-quote-right"></i><br>
+                <em>-Hippocrates</em>
+            </span>
+            <img src="https://w7.pngwing.com/pngs/667/592/png-transparent-world-health-organization-united-nations-global-health-world-health-organization-logo-world-world-map.png">
+        </div>
+        <div class="right">
+            <h1>AI Medical Report Summarizer</h1>
+            <h3>
+                Upload the medical records and get a summary in seconds.<br><br>
+                READ FASTER AND UNDERSTAND BETTER
+            </h3>
+
+            <form id="uploadForm" enctype="multipart/form-data" onsubmit="return false">
+                <input type="file" name="report" id="report" accept=".pdf,.doc,.docx,.txt">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHpbfDBxp66OxQCxNOVxc4E7vwll81FsSz9Q&s">
+                <button type="button" id="upload"><i class="fa fa-upload"></i>Upload Document</button>
+                <p>Drag and drop file here</p>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="/static/javascript/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer type="text/javascript" src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</html>
