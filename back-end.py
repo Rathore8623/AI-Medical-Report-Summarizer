@@ -102,7 +102,10 @@ def analyze_file():
 
 @app.route('/') 
 def index():
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        return jsonify({'could not load page'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

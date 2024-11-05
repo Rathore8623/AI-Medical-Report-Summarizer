@@ -116,7 +116,7 @@ body{
     padding: 0 50px 30px 50px ;
     display: block ;
     white-space: pre-wrap ;
-    font-family: "Raleway Thin" ;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
     font-size: 16pt ;
 }
 @keyframes scale_up{
