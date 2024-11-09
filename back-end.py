@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
 from PyPDF2 import PdfReader
 from docx import Document
@@ -99,6 +99,10 @@ def analyze_file():
         return jsonify({'summary': summary})
     except Exception as e:
         return jsonify({'summary': 'Error analyzing the file.'}), 500
+    
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static/assets', path)
 
 @app.route('/') 
 def index():
