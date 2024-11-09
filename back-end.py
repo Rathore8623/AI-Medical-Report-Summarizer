@@ -99,11 +99,6 @@ def analyze_file():
     # Return the summary as a JSON response
         return jsonify({'summary': summary})
 
-# Serve static files in the "static" folder
-@app.route('/static/<path:path>')
-def send_static(path):
-    return send_from_directory('static', path)
-
 # Serve the main HTML template
 @app.route('/') 
 def index():
@@ -111,11 +106,6 @@ def index():
         return render_template('index.html')
     except Exception as e:
         return jsonify({'error': 'Could not load page'}), 500
-
-# Handle favicon requests
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory('icons', 'favicon.ico')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
