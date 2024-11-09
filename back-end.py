@@ -45,6 +45,8 @@ def extract_text_from_word(docx_path):
 # Function to summarize text using Google's Gemini model
 def summarize_text(text):
     try:
+        if not text.strip():
+            return "No text found to summarize."
         model = genai.GenerativeModel('gemini-1.5-flash')
         input_prompt = (
             f"Summarize the following medical report:\n\n{text}.\n\n"
@@ -54,14 +56,13 @@ def summarize_text(text):
             "inform the user that the file is incorrect."
         )
         response = model.generate_content([input_prompt])
-        
+
         # Check if the response contains text
         if response and response.text:
             return response.text 
         return "No summary available."
     
     except Exception as e:
-        print(f"Error during summarization: {e}")
         return "Error in summarizing the text."
 
 # Route for file analysis
@@ -107,7 +108,7 @@ def send_static(path):
 @app.route('/') 
 def index():
     try:
-        return render_template('../templates/index.html')
+        return render_template('index.html')
     except Exception as e:
         return jsonify({'error': 'Could not load page'}), 500
 
