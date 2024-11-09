@@ -8,16 +8,24 @@
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "src": "/static/css/style.css",
+      "dest": "/static/css/style.css"
     },
     {
-      "src": "/favicon.ico",
+      "src": "/icons/favicon.ico",
       "dest": "/icons/favicon.ico"
     },
     {
       "src": "/(.*)",
       "dest": "back-end.py"
+    },
+    {
+      "src": "/static/javascript/script.js",
+      "dest": "/static/javascript/script.js"
+    },
+    {
+      "src": "/templates/index.html",
+      "dest": "/templates/index.html"
     }
   ]
 }
