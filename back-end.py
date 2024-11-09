@@ -14,7 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, static_folder='public')
 CORS(app)
 
 # Set your Google Gemini API key
