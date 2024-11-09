@@ -1,0 +1,444 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
+*{
+    font-family: 'Raleway Thin', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode' ;
+}
+body{
+    margin: 0px ;
+    padding: 0px ;
+    box-sizing: border-box ;
+}
+.main, #container{
+    width: 100% ;
+    height: 100dvh ;
+    display: flex ;
+    position: fixed ;
+}
+.main{
+    justify-content: space-between ;
+}
+#container{
+    background: rgba(0, 0, 0, 0.7) ;
+    z-index: 5 ;
+    justify-content: center ;
+    align-items: center ;
+    color: #FFFFFF ;
+    font-family: "Raleway Thin";
+    display: none ;
+}
+#container h1{
+    margin-right: 20px ;
+    font-family: "Raleway Thin" ;
+}
+.loader{
+	width: 50px ;
+	height: 50px ;
+	border-radius: 50% ;
+	animation: spin 1.5s linear infinite ;
+} 
+@keyframes spin{
+	0%{
+	    transform: rotate(0deg) ;
+    } 	
+    100%{
+        transform: rotate(360deg) ;
+    }
+}
+.loader span{
+	position: absolute ;
+	transform: rotate(calc(60deg * var(--i))) ;
+    inset: 1px ;			
+}
+#bubble{
+	width: 12px ;
+	height: 12px ;
+	border-radius: 50% ;
+    background-color: #90D6FF ;
+}
+.operation{
+    width: 500px ;
+    position: fixed ;
+    bottom: anchor(top) ;
+    left: 85% ;
+    top: 2% ;
+    justify-content: space-between ;
+    align-items: center ;
+    z-index: 3 ;
+    opacity: 0 ;
+    scale: 0 ;
+}
+.close_button, .download_button{
+    font-size: 12pt ;
+    color: #000000 ;
+    background: transparent ;
+    font-family: "Raleway Thin" ;
+    transition: .4s ease ;
+    font-weight: bold ;
+    transition: .8s ease ;
+}
+.close_button{
+    justify-self: flex-end ;
+    margin-left: 30px ;
+}
+.download_button{
+    justify-self: flex-start ;
+}
+.close_button:hover, .download_button:hover{
+    cursor: pointer ;
+    text-decoration: line-through ;
+}
+.window, #summary{
+    position: fixed ;
+    z-index: 3 ;
+    border-radius: 3px ;
+    transition: .4s ease ;
+    scale: 0 ;
+    opacity: 0 ;
+}
+.window{
+    width: 96% ;
+    height: 90% ;
+    translate: 2% 7% ;
+    overflow-Y: auto ;
+    backdrop-filter: blur(5px) ;
+    background: rgba(0, 0, 0, 0.95) ;
+    box-shadow: 0 0 7px 1px #333333;
+}
+.window h1{
+    font-size: 28pt ;
+    font-family: 'Raleway Thin' ;
+    color: #FFFFFF ;
+    padding-left: 50px ;
+}
+#summary{
+    min-width: 93% ;
+    height: 100% ;
+    color: #FFFFFF ;
+    padding: 0 50px 30px 50px ;
+    display: block ;
+    white-space: pre-wrap ;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+    font-size: 16pt ;
+}
+@keyframes scale_up{
+    0%{
+        scale: 0 ;
+        opacity: 0 ;
+    }
+    100%{
+        scale: 1 ;
+        opacity: 1 ;
+    }
+}
+@keyframes scale_down{
+    from{
+        scale: 1 ;
+        opacity: 1 ;
+    }
+    to{
+        scale: 0 ;
+        opacity: 0 ;
+    }
+}
+.left{
+    width: 30% ;
+    height: 100% ;
+    background: #90D6FF ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    color: #ffffff ;
+    overflow:  hidden ;
+    z-index: -2 ;
+    position: relative ;
+    text-shadow: 2px 2px 2px #2F52A4 ;
+    box-shadow: 0 0 10px 3px #4faee1 inset ;
+}
+.left span, span > em, img{
+    position: absolute ;
+    font-family: "Raleway Thin" ;
+    font-size: 32pt ;
+}
+.left img:first-child{
+    mix-blend-mode: screen ;
+    width: auto ;
+    height: 100% ;
+    opacity: 0 ;
+    animation: show_up 2s ease forwards ;
+    filter: brightness(85%) saturate(200%) contrast(160%) ;
+}
+.left img:last-child{
+    height: 200px ;
+    mix-blend-mode: screen ;
+    opacity: 0 ;
+    animation: show_up 1s ease forwards 1.5s ;
+    filter: contrast(200%) brightness(100%) invert(100%) saturate(200%) ;
+    translate: 0% -90% ;
+}
+.left span{
+    padding: 0 20px 0 20px ;
+    opacity: 0 ;
+    animation: show_up 1s ease forwards 2s ;
+    translate: 0 30% ;
+}
+.left span i{
+    color: #2F52A4 ;
+    text-shadow: none ;
+}
+.left span em{
+    font-size: 18pt ;
+    margin-left: 60% ;
+}
+@keyframes show_up{
+    from{
+        opacity: 0 ;
+    }
+    to{
+        opacity: 1 ;
+    }
+}
+.right{
+    width: 70% ;
+    height: 100% ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    flex-direction: column ;
+    box-shadow: 0 0 10px 3px #D4D4D4 inset ;
+}
+.right h1, h3{
+    color: #2F52A4 ;
+    font-family: "Raleway Thin" ;
+    text-align: center ;
+}
+.right h1{
+    font-size: 40pt ;
+}
+.right h3{
+    font-size: 16pt ;
+}
+form{
+    width: 80% ;
+    height: 40% ;
+    box-shadow: 0 0 10px 3px #F1F2F3 ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    flex-direction: column ;
+    background: #FFFFFF ;
+}
+form input{
+    display: none ;
+    translate: 0 -100% ;
+}
+form img{
+    height: 13% ;
+    translate: 0% -60% ;
+    background-blend-mode: screen;
+}
+#upload{
+    width: 250px ;
+    height: 40px ;
+    font-size: 14pt ;
+    color: #FFFFFF ;
+    font-family: "Raleway Thin" ;
+    background: #84E766 ;
+    outline: none ;
+    border: transparent ;
+    border-radius: 3px ;
+    font-weight: bold ;
+    translate: 0 130% ;
+    transition: .2s ease ;
+    display: flex ;
+    justify-content: space-evenly ;
+    align-items: center ;
+    box-shadow: 0 0 10px 3px #6ae2e2 inset ;
+}
+#upload:hover{
+    cursor: pointer ;
+    outline: 2px solid #90D6FF ;
+    outline-offset: 2px ;
+    filter: none ;
+}
+form p{
+    translate: 0 170% ;
+    font-size: 14pt ;
+    font-family: "Raleway Thin" ;
+    color: #404040 ;
+}
+@media screen and (0px <= width < 480px){
+    #summary{
+        max-width: 95% ;
+        padding: 10px 10px 12px 10px;
+        margin-bottom: 20px ;
+    }
+    .window h1{
+        padding-left: 10px ;
+        font-size: 24pt ;
+    }
+    #container h1{
+        font-size: 14pt ;
+        margin-right: 10px ;
+    }
+    .loader{
+        width: 20px ;
+        height: 20px ;
+    } 
+    #bubble{
+        width: 5px ;
+        height: 5px ;
+    }
+}
+@media screen and (480px <= width <= 1000px){
+    #summary{
+        max-width: 100% ;
+        padding: 0 12px 12px 12px ;
+        margin-bottom: 20px ;
+    }
+    .window h1{
+        padding-left: 12px ;
+        font-size: 24pt ;
+    }
+}
+@media screen and (0px <= width <= 1000px){
+    .main{
+        flex-direction: column ;
+        overflow-y: auto ;
+        height: 200svh ;
+        position: relative ;
+    }
+}
+@media screen and (1000px < width <= 1400px){
+    .operation{
+        translate: -12% 0% ;
+    }
+    .left img:first-child{
+        width: 100% ;
+        height: 100% ;
+    }
+    .left img:last-child{
+        height: 20% ;
+    }
+    .left span, span i{
+        font-size: 22pt ;
+    }
+    .left span em{
+        font-size: 12pt ;
+    }
+    .right h1{
+        font-size: 28pt ;
+    }
+    .right h3{
+        font-size: 16pt ;
+    }
+    .right form img{
+        height: 12% ;
+    }
+    #upload{
+        width: 250px ;
+        height: 40px ;
+        font-size: 14pt ;
+    }
+    form p{
+        font-size: 14pt ;
+    }
+}
+@media screen and (0px <= width <= 500px){
+    .main{
+        flex-direction: column ;
+    }
+    #summary{
+        font-size: 12pt ;
+    }
+    .operation{
+        width: 180px ;
+        left: 2% ;
+        top: 2% ;
+    }
+    .close_button, .download_button{
+        font-size: 10pt ;
+    }
+    .close_button{
+        margin-left: 14px ;
+    }
+    .left, .right{
+        width: 100% ;
+        height: 100svh ; 
+    }
+    .left img:first-child{
+        width: 100% ;
+        height: 100% ;
+    }
+    .left img:last-child{
+        height: 20% ;
+    }
+    .left span, span i{
+        font-size: 16pt ;
+    }
+    .left span em{
+        font-size: 10pt ;
+    }
+    .right h1{
+        font-size: 24pt ;
+    }
+    .right h3{
+        font-size: 11pt ;
+    }
+    .right form img{
+        height: 5% ;
+    }
+    #upload{
+        width: 200px ;
+        height: 30px ;
+        translate: 0% 150% ;
+        font-size: 12pt ;
+        translate: 0 150% ;
+    }
+    form p{
+        font-size: 11pt ;
+        translate: 0 250% ;
+    }
+}
+@media screen and (500px < width <= 1400px){
+    #summary{
+        max-width: 85% ;
+    }
+    .operation{
+        translate: -22% 0;
+    }
+    .left, .right{
+        width: 100% ;
+        height: 100svh ;
+    }
+    .left img:first-child{
+        width: 100% ;
+        height: 100% ;
+    }
+    .left img:last-child{
+        height: 20% ;
+    }
+    .left span, span i{
+        font-size: 22pt ;
+    }
+    .left span em{
+        font-size: 12pt ;
+    }
+    .right h1{
+        font-size: 28pt ;
+    }
+    .right h3{
+        font-size: 16pt ;
+    }
+    .right form img{
+        height: 8% ;
+    }
+    #upload{
+        width: 200px ;
+        height: 40px ;
+        font-size: 12pt ;
+        translate: 0 120% ;
+    }
+    form p{
+        font-size: 12pt ;
+        translate: 0 250% ;
+    }
+}
