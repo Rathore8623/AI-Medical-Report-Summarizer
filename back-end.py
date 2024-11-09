@@ -6,7 +6,7 @@ import google.generativeai as genai
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import sys
-from flask_cors import CORS 
+from flask_cors import CORS
 
 # Configure output encoding for UTF-8
 sys.stdout.reconfigure(encoding='utf-8')
@@ -14,7 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__, static_folder='public')
+app = Flask(__name__)
 CORS(app)
 
 # Set your Google Gemini API key
@@ -115,7 +115,17 @@ def index():
 # Handle favicon requests
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory('static', 'favicon.ico')
+    return send_from_directory('icons', 'favicon.ico')
+
+# Serve CSS file correctly
+@app.route('/style.css')
+def style():
+    return send_from_directory('static/css', 'style.css')
+
+# Serve JS file correctly
+@app.route('/script.js')
+def script():
+    return send_from_directory('static/javascript', 'script.js')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
