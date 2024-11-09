@@ -97,7 +97,7 @@ def analyze_file():
         os.remove(file_path)
 
     # Return the summary as a JSON response
-    return jsonify({'summary': summary})
+        return jsonify({'summary': summary})
 
 # Serve static files in the "static" folder
 @app.route('/static/<path:path>')
@@ -116,16 +116,6 @@ def index():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory('icons', 'favicon.ico')
-
-# Serve CSS file correctly
-@app.route('/style.css')
-def style():
-    return send_from_directory('static/css', 'style.css')
-
-# Serve JS file correctly
-@app.route('/script.js')
-def script():
-    return send_from_directory('static/javascript', 'script.js')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
