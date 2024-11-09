@@ -107,7 +107,7 @@ def send_static(path):
 @app.route('/') 
 def index():
     try:
-        return render_template('template/index.html')
+        return render_template('templates/index.html')
     except Exception as e:
         return jsonify({'error': 'Could not load page'}), 500
 
