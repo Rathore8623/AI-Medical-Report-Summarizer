@@ -7,6 +7,8 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import sys
 from flask_cors import CORS 
+
+# Configure output encoding for UTF-8
 sys.stdout.reconfigure(encoding='utf-8')
 
 # Load environment variables
@@ -15,17 +17,16 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-
 # Set your Google Gemini API key
 api_key = os.getenv('gemini_api_key')
-
-# Configure the Generative AI (Gemini) API
 genai.configure(api_key=api_key)
 
-# Directory where files will be temporarily stored
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')  # Use current working directory and uploads folder
+# Directory where files will be temporarily stored (use /tmp in serverless environments)
+UPLOAD_FOLDER = '/tmp/uploads'
+
+# Ensure the /tmp/uploads directory exists
 if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)  # Create the folder if it doesn't exist
+    os.makedirs(UPLOAD_FOLDER)
 
 # Function to extract text from PDF files
 def extract_text_from_pdf(pdf_path):
@@ -38,32 +39,32 @@ def extract_text_from_pdf(pdf_path):
 # Function to extract text from Word files
 def extract_text_from_word(docx_path):
     doc = Document(docx_path)
-    full_text = []
-    for para in doc.paragraphs:
-        full_text.append(para.text)
+    full_text = [para.text for para in doc.paragraphs]
     return '\n'.join(full_text)
 
-# Function to summarize text using Google's Gemini model (PaLM API)
+# Function to summarize text using Google's Gemini model
 def summarize_text(text):
     try:
-        # Instantiate the GenerativeModel
         model = genai.GenerativeModel('gemini-1.5-flash')
-        input_prompt = f"Summarize the following medical report:\n\n{text}.\n\nThe summary should highlight patients details, key medical conditions, operations till now inthis condition if any, medications prescribed, follow-ups, and future health threats in bullet points. Keep the summary very brief in about 200 words but highlight every key point. If it is not a medical report do not generate the summary rather tell the user that he uploaded wrong file."
-        # Generate content using the model
-        response = model.generate_content(
-            [input_prompt]
+        input_prompt = (
+            f"Summarize the following medical report:\n\n{text}.\n\n"
+            "The summary should highlight patient's details, key medical conditions, "
+            "operations, medications, follow-ups, and future health threats in bullet points. "
+            "Keep the summary brief in about 200 words. If it's not a medical report, "
+            "inform the user that the file is incorrect."
         )
-        # Access the result
-        # Extract the text from the response
+        response = model.generate_content([input_prompt])
+        
+        # Check if the response contains text
         if response and response.text:
             return response.text 
-        return "No summary available"
-
+        return "No summary available."
+    
     except Exception as e:
         print(f"Error during summarization: {e}")
         return "Error in summarizing the text."
 
-
+# Route for file analysis
 @app.route('/analyze', methods=['POST'])
 def analyze_file():
     if 'file' not in request.files:
@@ -72,7 +73,7 @@ def analyze_file():
     file = request.files['file']
     file_extension = os.path.splitext(file.filename)[1].lower()
 
-    # Save the uploaded file to the UPLOAD_FOLDER
+    # Save the uploaded file to /tmp/uploads
     filename = secure_filename(file.filename)
     file_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(file_path)
@@ -90,27 +91,30 @@ def analyze_file():
     # Summarize the extracted text
     summary = summarize_text(text)
     
-    # Optionally remove the uploaded file after processing
+    # Remove the uploaded file after processing
     if os.path.exists(file_path):
         os.remove(file_path)
 
     # Return the summary as a JSON response
-    try:
-        return jsonify({'summary': summary})
-    except Exception as e:
-        return jsonify({'summary': 'Error analyzing the file.'}), 500
-    
+    return jsonify({'summary': summary})
+
+# Serve static files in the "static" folder
 @app.route('/static/<path:path>')
 def send_static(path):
-    return send_from_directory('static/assets', path)
+    return send_from_directory('static', path)
 
+# Serve the main HTML template
 @app.route('/') 
 def index():
     try:
         return render_template('template/index.html')
     except Exception as e:
-        return jsonify({'could not load page'})
+        return jsonify({'error': 'Could not load page'}), 500
+
+# Handle favicon requests
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
